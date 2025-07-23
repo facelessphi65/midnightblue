@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Listen Only</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #100f1f url('midnight blue.jpg') no-repeat center center fixed;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      padding: 1rem;
+      background-color: #DDDDFF;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      animation: float 2s ease-in-out infinite;
+      margin-top: 180px;
+      transform: translateY(30px);
+      width: 80vw;
+      max-width: 500px;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(30px); }
+      50% { transform: translateY(20px); }
+      100% { transform: translateY(30px); }
+    }
+
+    h1 {
+      color: #1e3a8a;
+      font-size: 2rem;
+    }
+
+    audio {
+      background-color: #DDDDFF;
+      border-radius: 8px;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 90vw;
+      margin-top: 1rem;
+      outline: none;
+    }
+
+    p {
+      margin-top: 1rem;
+      color: #1e3a8a;
+      font-weight: 500;
+    }
+
+    .controls {
+      margin-top: 1rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      background-color: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #334bb5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Midnight Blue 🎧</h1>
+
+    <audio id="player" controls>
+      <source id="trackSource" src="" type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="controls">
+      <button onclick="prevTrack()">⏮️ Prev</button>
+      <button onclick="nextTrack()">Next ⏭️</button>
+    </div>
+
+    <p id="trackTitle">Disappear Here.</p>
+  </div>
+
+  <script>
+    const tracks = [
+      { src: "music/track1.mp3", title: "50Bands" },
+      { src: "music/track2.mp3", title: "ALIEN THOUGHTS" },
+      { src: "music/track3.mp3", title: "H.E.R Body" },
+      { src: "music/track4.mp3", title: "FRAGULE!!!" },
+      { src: "music/track5.mp3", title: "D.N.D" },
+      { src: "music/track6.mp3", title: "gLuey" } // bonus
+    ];
+
+    let currentTrack = -1; // start before the first track
+    const player = document.getElementById("player");
+    const source = document.getElementById("trackSource");
+    const title = document.getElementById("trackTitle");
+
+    function loadTrack(index) {
+      if (index < 0) index = tracks.length - 1;
+      if (index >= tracks.length) index = 0;
+      currentTrack = index;
+      source.src = tracks[currentTrack].src;
+      player.load();
+      player.play();
+      title.textContent = tracks[currentTrack].title;
+    }
+
+    function prevTrack() {
+      if (currentTrack === -1) {
+        loadTrack(0); // first time next/prev is pressed
+      } else {
+        loadTrack(currentTrack - 1);
+      }
+    }
+
+    function nextTrack() {
+      if (currentTrack === -1) {
+        loadTrack(0);
+      } else {
+        loadTrack(currentTrack + 1);
+      }
+    }
+
+    // autoplay next track on end
+    player.addEventListener('ended', () => {
+      nextTrack();
+    });
+  </script>
+</body>
+</html>
