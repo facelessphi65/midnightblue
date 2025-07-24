@@ -88,15 +88,20 @@
       Your browser does not support the audio element.
     </audio>
 
-    <div class="controls">
-      <button onclick="prevTrack()">⏮️ Prev</button>
-      <button onclick="nextTrack()">Next ⏭️</button>
-    </div>
-
-    <p id="trackTitle"> AIRPODS/HEADPHONES RECOMMENDED</p>
+   <div class="controls">
+  <button id="startBtn" onclick="startPlayer()">▶️ Start Listening</button>
+  <div id="navControls" style="display: none;">
+    <button onclick="prevTrack()">⏮️ Prev</button>
+    <button onclick="nextTrack()">Next ⏭️</button>
   </div>
-
+</div>
+    
   <script>
+      function startPlayer() {
+  loadTrack(0); // start with the first track
+  document.getElementById("startBtn").style.display = "none";
+  document.getElementById("navControls").style.display = "inline";
+}
     const tracks = [
       { src: "music/track1.mp3", title: "50Bands" },
       { src: "music/track2.mp3", title: "ALIEN THOUGHTS" },
