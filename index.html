@@ -89,37 +89,38 @@
     </audio>
 
     <div class="controls">
-  <button id="startBtn" onclick="startPlayer()">▶️ Start Listening</button>
-  <div id="navControls" style="display: none;">
-    <button onclick="prevTrack()">⏮️ Prev</button>
-    <button onclick="nextTrack()">Next ⏭️</button>
-  </div>
-</div>
-
+      <button id="startBtn" onclick="startPlayer()">▶️ Start Listening</button>
+      <div id="navControls" style="display: none;">
+        <button onclick="prevTrack()">⏮️ Prev</button>
+        <button onclick="nextTrack()">Next ⏭️</button>
+      </div>
+    </div>
 
     <p id="trackTitle">AIRPODS/HEADPHONES RECOMMENDED.</p>
   </div>
 
   <script>
-    function startPlayer() {
-  loadTrack(0); // start with the first track
-  document.getElementById("startBtn").style.display = "none";
-  document.getElementById("navControls").style.display = "inline";
-}
-
     const tracks = [
       { src: "music/track1.mp3", title: "50Bands" },
       { src: "music/track2.mp3", title: "ALIEN THOUGHTS" },
       { src: "music/track3.mp3", title: "H.E.R Body" },
       { src: "music/track4.mp3", title: "FRAGULE!!!" },
       { src: "music/track5.mp3", title: "D.N.D" },
-      { src: "music/track6.mp3", title: "gLuey(BONUS)" } // bonus
+      { src: "music/track6.mp3", title: "gLuey(BONUS)" }
     ];
 
-    let currentTrack = -1; // start before the first track
+    let currentTrack = -1;
     const player = document.getElementById("player");
     const source = document.getElementById("trackSource");
     const title = document.getElementById("trackTitle");
+    const startBtn = document.getElementById("startBtn");
+    const navControls = document.getElementById("navControls");
+
+    function startPlayer() {
+      loadTrack(0);
+      startBtn.style.display = "none";
+      navControls.style.display = "inline";
+    }
 
     function loadTrack(index) {
       if (index < 0) index = tracks.length - 1;
@@ -133,7 +134,7 @@
 
     function prevTrack() {
       if (currentTrack === -1) {
-        loadTrack(0); // first time next/prev is pressed
+        loadTrack(0);
       } else {
         loadTrack(currentTrack - 1);
       }
@@ -147,9 +148,16 @@
       }
     }
 
-    // autoplay next track on end
     player.addEventListener('ended', () => {
-      nextTrack();
+      if (currentTrack < tracks.length - 1) {
+        nextTrack();
+      } else {
+        // Last track reached
+        title.textContent = "Playlist ended. Start again?";
+        navControls.style.display = "none";
+        startBtn.style.display = "inline";
+        currentTrack = -1; // Reset to start
+      }
     });
   </script>
 </body>
